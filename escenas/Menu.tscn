@@ -1,16 +1,39 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=14 format=2]
 
-[ext_resource path="res://Assets/menu/menu_background.webp" type="Texture" id=1]
+[ext_resource path="res://Assets/menu/OIG1 (1).jpeg" type="Texture" id=1]
 [ext_resource path="res://Scripts/Menu.gd" type="Script" id=2]
 
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0, 0, 0, 0.227451 )
+[sub_resource type="Theme" id=4]
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0, 0, 0, 0.780392 )
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.160784, 0.160784, 0.160784, 1 )
+
+[sub_resource type="InputEventKey" id=11]
+scancode = 16777221
+
+[sub_resource type="ShortCut" id=12]
+shortcut = SubResource( 11 )
 
 [sub_resource type="StyleBoxFlat" id=2]
-bg_color = Color( 0, 0, 0, 0.227451 )
+bg_color = Color( 0, 0, 0, 0.780392 )
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 0.160784, 0.160784, 0.160784, 1 )
 
 [sub_resource type="StyleBoxFlat" id=3]
-bg_color = Color( 0, 0, 0, 0.227451 )
+bg_color = Color( 0, 0, 0, 0.780392 )
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0.160784, 0.160784, 0.160784, 1 )
+
+[sub_resource type="InputEventKey" id=9]
+scancode = 16777217
+
+[sub_resource type="ShortCut" id=10]
+shortcut = SubResource( 9 )
 
 [node name="Menu" type="Control"]
 anchor_right = 1.0
@@ -34,31 +57,38 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -74.0
-margin_top = -65.0
-margin_right = 93.0
-margin_bottom = 99.0
+margin_left = -268.0
+margin_top = -47.5
+margin_right = 268.0
+margin_bottom = 47.5
 custom_constants/separation = 17
 
 [node name="Play" type="Button" parent="VBoxContainer"]
-margin_right = 167.0
-margin_bottom = 20.0
-custom_styles/hover = SubResource( 1 )
+margin_right = 536.0
+margin_bottom = 14.0
+theme = SubResource( 4 )
+custom_styles/hover = SubResource( 5 )
+custom_styles/normal = SubResource( 6 )
+shortcut = SubResource( 12 )
 text = "START"
 
 [node name="Options" type="Button" parent="VBoxContainer"]
-margin_top = 37.0
-margin_right = 167.0
-margin_bottom = 57.0
+margin_top = 31.0
+margin_right = 536.0
+margin_bottom = 45.0
 custom_styles/hover = SubResource( 2 )
+custom_styles/normal = SubResource( 7 )
 text = "OPTIONS"
 
 [node name="Exit" type="Button" parent="VBoxContainer"]
-margin_top = 74.0
-margin_right = 167.0
-margin_bottom = 94.0
+margin_top = 62.0
+margin_right = 536.0
+margin_bottom = 76.0
 custom_styles/hover = SubResource( 3 )
+custom_styles/normal = SubResource( 8 )
+shortcut = SubResource( 10 )
 text = "EXIT"
+icon_align = 1
 
 [connection signal="pressed" from="VBoxContainer/Play" to="." method="_on_Play_pressed"]
 [connection signal="pressed" from="VBoxContainer/Options" to="." method="_on_Options_pressed"]

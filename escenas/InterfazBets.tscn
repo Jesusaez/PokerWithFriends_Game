@@ -1,0 +1,36 @@
+[gd_scene format=2]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_pivot_offset = Vector2( -179, 142 )
+
+[node name="Button" type="Button" parent="."]
+margin_left = 894.0
+margin_top = 515.0
+margin_right = 992.0
+margin_bottom = 562.0
+rect_pivot_offset = Vector2( -980, -351 )
+text = "RAISE"
+
+[node name="Button2" type="Button" parent="."]
+margin_left = 768.0
+margin_top = 515.0
+margin_right = 866.0
+margin_bottom = 562.0
+rect_pivot_offset = Vector2( -980, -351 )
+text = "FOLD"
+
+[node name="Button3" type="Button" parent="."]
+margin_left = 641.0
+margin_top = 515.0
+margin_right = 739.0
+margin_bottom = 562.0
+rect_pivot_offset = Vector2( -980, -351 )
+text = "CALL/CHECK"
+
+[node name="HScrollBar" type="HScrollBar" parent="."]
+margin_left = 636.0
+margin_top = 448.0
+margin_right = 995.0
+margin_bottom = 470.0
