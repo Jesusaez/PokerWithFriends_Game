@@ -11,6 +11,7 @@ config_version=4
 [application]
 
 config/name="Poker With Friends Game"
+run/main_scene="res://escenas/Menu.tscn"
 config/icon="res://icon.png"
 
 [gui]
