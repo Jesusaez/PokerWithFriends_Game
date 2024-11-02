@@ -1,9 +1,11 @@
 extends Node2D
 
 # Arrays con los nombres y los chips
-var chips = [5000, 5000, 5000, 5000, 5000]
+var PlayerChips = [5000, 5000, 5000, 5000, 5000]
 var playerName = ["Pedro Sanchez","Mario Mendez", "Jesus Saez", "Eric Garcia", "Josep Ruiz"]
-
+var playerCards=[]
+var turnoJug=0
+var numPlayer=5
 # Escenas  instanciar
 var player_card_scene = preload("res://escenas/InterfazEnemy.tscn")  
 var card_scene = preload("res://escenas/Carta.tscn")  
@@ -83,12 +85,12 @@ func _ready():
 	# ------------------------------------------------
 	# Instanciar los nombres y fichas de jugadores
 	# ------------------------------------------------
-	for i in range(4):
+	for i in range(numPlayer-1):
 		var player_card_instance = player_card_scene.instance()
 
 		# Asignar nombre y chips a los labels
-		player_card_instance.get_node("Background/Player_Name").text = playerName[i]
-		player_card_instance.get_node("Background/Chips").text = str(chips[i])
+		player_card_instance.get_node("Background/Player_Name").text = playerName[i+1]
+		player_card_instance.get_node("Background/Chips").text = str(PlayerChips[i+1])
 
 		# Ubicar el cartel en la posición correspondiente del PathFollow2D
 		var path_follow = path_follows[i]
@@ -101,21 +103,30 @@ func _ready():
 	# ------------------------------------------------
 	# Crear cartas en las ubicaciones especificadas
 	# ------------------------------------------------
-	for i in range(2):
+	for i in range(numPlayer*2):
 		var card_instance = card_scene.instance()
-
+		
 		# Elegir una carta aleatoria de la baraja
-		var card_texture = load(Baraja[randi() % Baraja.size()])
-		#CartasSacadas=card_texture
-		card_instance.get_node("Img").texture = card_texture
+		var card_texture = cojeCarta()
+		if(i<2):
+			card_instance.get_node("Img").texture = card_texture
+			var card_position = Card_positions[i]
+			card_instance.rect_position = card_position.position
+			card_instance.rect_scale = Vector2(1.5, 1.5)
+			yield(get_tree().create_timer(1), "timeout")
+			add_child(card_instance)
+		#else:
+			#hacer que el codigo muestre la Behind_Card1 se espere 1 sec y que en la siguiente ronda de i muestre Behind_Card2
+		playerCards.append(card_texture)
 
-		# Ubicar la carta en la posición correspondiente en CardSpawn
-		var card_position = Card_positions[i]
-		card_instance.rect_position = card_position.position
-		card_instance.rect_scale = Vector2(1.5, 1.5)
-		
-		# Añadir la instancia de la carta a la escena
-		add_child(card_instance)
-		
-	
-	
+
+func cojeCarta():
+	var error = true
+	var card_texture
+
+	while error:
+		card_texture = load(Baraja[randi() % Baraja.size()])
+		if not CartasSacadas.has(card_texture):
+			error = false 
+	CartasSacadas.append(card_texture)
+	return card_texture

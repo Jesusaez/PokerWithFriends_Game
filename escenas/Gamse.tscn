@@ -45,8 +45,8 @@ rotation = 0.0457131
 offset = 1254.0
 
 [node name="InterJugSpawnLocation2" type="PathFollow2D" parent="InterfazJugadores"]
-position = Vector2( 948.484, 141.379 )
-rotation = 1.28711
+position = Vector2( 897.231, 123.861 )
+rotation = 0.0457114
 offset = 2078.0
 
 [node name="InterJugSpawnLocation4" type="PathFollow2D" parent="InterfazJugadores"]
