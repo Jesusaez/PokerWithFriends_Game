@@ -1,28 +1,4 @@
 extends Node2D
-
-# Arrays con los nombres y los chips
-var PlayerChips = [5000, 5000, 5000, 5000, 5000]
-var playerName = ["Pedro Sanchez","Mario Mendez", "Jesus Saez", "Eric Garcia", "Josep Ruiz"]
-var playerCards=[]
-var turnoJug=0
-var numPlayer=5
-# Escenas  instanciar
-var player_card_scene = preload("res://escenas/InterfazEnemy.tscn")  
-var card_scene = preload("res://escenas/Carta.tscn")  
-
-
-# Rutas para las posiciones de los jugadores (PathFollow2D)
-onready var path_follows = [
-	$InterfazJugadores/InterJugSpawnLocation1,
-	$InterfazJugadores/InterJugSpawnLocation2,
-	$InterfazJugadores/InterJugSpawnLocation3,
-	$InterfazJugadores/InterJugSpawnLocation4
-]
-onready var Card_positions = [
-	$CardSpawn/CardSpawnLocation1,
-	$CardSpawn/CardSpawnLocation2
-]
-
 var Baraja = [
 	"res://Assets/cartas_sueltas/Diamonds/tile000.png",
 	"res://Assets/cartas_sueltas/Diamonds/tile001.png",
@@ -77,10 +53,42 @@ var Baraja = [
 	"res://Assets/cartas_sueltas/Clubs/tile011.png",
 	"res://Assets/cartas_sueltas/Clubs/tile012.png"
 ]
+# Arrays con los nombres y los chips
+var PlayerChips = [5000, 5000, 5000, 5000, 5000]
+var playerName = ["Pedro Sanchez","Mario Mendez", "Jesus Saez", "Eric Garcia", "Josep Ruiz"]
+var playerCards=[]
+var turnoJug=0
+var numPlayer=5
+var bets_scene  # Referencia a la interfaz `Bets`
+
+# Escenas  instanciar
+var player_card_scene = preload("res://escenas/InterfazEnemy.tscn")  
+var card_scene = preload("res://escenas/Carta.tscn")  
+
+
+# Rutas para las posiciones de los jugadores (PathFollow2D)
+onready var path_follows = [
+	$InterfazJugadores/InterJugSpawnLocation1,
+	$InterfazJugadores/InterJugSpawnLocation2,
+	$InterfazJugadores/InterJugSpawnLocation3,
+	$InterfazJugadores/InterJugSpawnLocation4
+]
+onready var Card_positions = [
+	$CardSpawn/CardSpawnLocation1,
+	$CardSpawn/CardSpawnLocation2
+]
+
+onready var button1 = $Interfaz_Bets/call
+onready var button2 = $Interfaz_Bets/fold
+onready var button3 = $Interfaz_Bets/raise
+
+var rng = RandomNumberGenerator.new()
 var CartasSacadas=[]
 var interfaz_players = []
 
 func _ready():
+	bets_scene = $Interfaz_Bets  # Cambia esto si tienes una ruta diferente
+	bets_scene.connect("boton_presionado", self, "_on_boton_presionado")
 	randomize()
 	# ------------------------------------------------
 	# Instanciar los nombres y fichas de jugadores
@@ -102,16 +110,49 @@ func _ready():
 		interfaz_players.append(player_card_instance)  # Agregar al array
 
 	#Robar Cartas Y enseñarlas poco a poco
-	startGame()
+	oneRound()
 	
 	#Empezar Juego
-func startGame():
-		mostrar_cartas_secuencialmente()
-		ordreJugadors()
+func oneRound():
+	#Robar Cartas
+	mostrar_cartas_secuencialmente()
+	tomaDecisiones()
+	turnoJug=turnoJug+1;
 
-func ordreJugadors():
-	#miau
-	a
+
+func tomaDecisiones():
+	for i in range(numPlayer):
+		if turnoJug==0:
+			tomaDecisionJugador()
+		else:
+			tomaDecisionBots()
+		turnoJug=turnoJug+1;
+		if turnoJug>4:
+			turnoJug=0;
+		
+		
+# Falta hacer que se espere a q el jugador clicke uno de los botones de check o algo asi
+func tomaDecisionJugador():
+	yield(bets_scene, "boton_presionado")  # Espera a que se presione un botón
+	print("El jugador ha tomado una decisión")
+
+func _on_boton_presionado(opcion):
+	print("Botón seleccionado:", opcion)
+	# Aquí puedes realizar acciones basadas en la opción
+	if opcion==1:
+		
+		else if opcion==2:
+		
+		else:
+	
+
+func tomaDecisionBots():
+	var opcion = rng.randf_range(0, 4)
+	yield(get_tree().create_timer(rng.randf_range(0, 4)), "timeout") 
+	
+func _on_button_pressed(button_number):
+	# Emitir la señal `button_chosen` cuando se presiona un botón
+	emit_signal("button_chosen", button_number)
 
 # Robar Las Cartas God
 func mostrar_cartas_secuencialmente():
