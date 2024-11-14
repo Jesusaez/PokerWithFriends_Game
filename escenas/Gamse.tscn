@@ -2,7 +2,7 @@
 
 [ext_resource path="res://escenas/InterfazBets.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Assets/maps/Poker_table.png" type="Texture" id=2]
-[ext_resource path="res://escenas/Gamse.gd" type="Script" id=4]
+[ext_resource path="res://Scripts/Gamse.gd" type="Script" id=4]
 
 [sub_resource type="Curve2D" id=1]
 _data = {
@@ -32,6 +32,7 @@ expand = true
 stretch_mode = 1
 
 [node name="Interfaz_Bets" parent="." instance=ExtResource( 1 )]
+visible = false
 anchor_left = 1.0
 anchor_top = 1.0
 

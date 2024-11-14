@@ -55,6 +55,7 @@ var Baraja = [
 ]
 # Arrays con los nombres y los chips
 var PlayerChips = [5000, 5000, 5000, 5000, 5000]
+var PlayerFolded = [false, false, false, false, false]
 var playerName = ["Pedro Sanchez","Mario Mendez", "Jesus Saez", "Eric Garcia", "Josep Ruiz"]
 var playerCards=[]
 var turnoJug=0
@@ -87,6 +88,7 @@ var CartasSacadas=[]
 var interfaz_players = []
 
 func _ready():
+	$Interfaz_Bets.hide()
 	bets_scene = $Interfaz_Bets  # Cambia esto si tienes una ruta diferente
 	bets_scene.connect("boton_presionado", self, "_on_boton_presionado")
 	randomize()
@@ -115,17 +117,18 @@ func _ready():
 	#Empezar Juego
 func oneRound():
 	#Robar Cartas
-	mostrar_cartas_secuencialmente()
-	tomaDecisiones()
+	yield(mostrar_cartas_secuencialmente(), "completed")
+	yield(tomaDecisiones(), "completed")
+	
 	turnoJug=turnoJug+1;
 
 
 func tomaDecisiones():
 	for i in range(numPlayer):
 		if turnoJug==0:
-			tomaDecisionJugador()
+			yield(tomaDecisionJugador(), "completed")
 		else:
-			tomaDecisionBots()
+			yield(tomaDecisionBots(), "completed")
 		turnoJug=turnoJug+1;
 		if turnoJug>4:
 			turnoJug=0;
@@ -133,26 +136,27 @@ func tomaDecisiones():
 		
 # Falta hacer que se espere a q el jugador clicke uno de los botones de check o algo asi
 func tomaDecisionJugador():
+	$Interfaz_Bets.show()
 	yield(bets_scene, "boton_presionado")  # Espera a que se presione un botón
-	print("El jugador ha tomado una decisión")
+	print("El jugador ha tomado una decisión")	
 
 func _on_boton_presionado(opcion):
 	print("Botón seleccionado:", opcion)
 	# Aquí puedes realizar acciones basadas en la opción
 	if opcion==1:
-		
-		else if opcion==2:
-		
+		print("Botón seleccionado:", opcion)
+	else:
+		if opcion==2:
+			print("Botón seleccionado:", opcion)
 		else:
-	
+			print("Botón seleccionado:", opcion)
+	$Interfaz_Bets.hide()
+
 
 func tomaDecisionBots():
 	var opcion = rng.randf_range(0, 4)
 	yield(get_tree().create_timer(rng.randf_range(0, 4)), "timeout") 
-	
-func _on_button_pressed(button_number):
-	# Emitir la señal `button_chosen` cuando se presiona un botón
-	emit_signal("button_chosen", button_number)
+
 
 # Robar Las Cartas God
 func mostrar_cartas_secuencialmente():
