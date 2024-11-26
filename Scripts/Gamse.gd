@@ -58,10 +58,11 @@ var PlayerChips = [5000, 5000, 5000, 5000, 5000]
 var PlayerFolded = [false, false, false, false, false]
 var playerName = ["Pedro Sanchez","Mario Mendez", "Jesus Saez", "Eric Garcia", "Josep Ruiz"]
 var playerCards=[]
+var chipsInTable=0 setget set_chips_Table
 var turnoJug=0
 var numPlayer=5
 var bets_scene  # Referencia a la interfaz `Bets`
-
+var opcionTurno
 # Escenas  instanciar
 var player_card_scene = preload("res://escenas/InterfazEnemy.tscn")  
 var card_scene = preload("res://escenas/Carta.tscn")  
@@ -118,17 +119,58 @@ func _ready():
 func oneRound():
 	#Robar Cartas
 	yield(mostrar_cartas_secuencialmente(), "completed")
+	yield(ponerFichasInicio(), "completed")
 	yield(tomaDecisiones(), "completed")
 	
 	turnoJug=turnoJug+1;
+	chipsInTable=0;
+
+func ponerFichasInicio():
+	PlayerChips[turnoJug]=PlayerChips[turnoJug]-50;
+	PlayerChips[turnoJug+1]=PlayerChips[turnoJug+1]-100;
+	chipsInTable=chipsInTable+150;
+	
+
+func set_chips_Table(value):
+	chipsInTable = value
+	print("La variable de chips cambió a: ", value)
+	mostrarChipsMesa()  # Llama a la función que deseas ejecutar.
+
+func mostrarChipsMesa():
+	print("Se ejecuta la función al cambiar la variable.")
+
+
+func fold():
+	PlayerFolded[turnoJug]=true;
+
+#func call():
+
+
+#func raise():
 
 
 func tomaDecisiones():
+# warning-ignore:unused_variable
 	for i in range(numPlayer):
-		if turnoJug==0:
-			yield(tomaDecisionJugador(), "completed")
-		else:
-			yield(tomaDecisionBots(), "completed")
+		if(i==0):
+			PlayerChips[turnoJug]=PlayerChips[turnoJug]-50;
+		if(i==1):
+			PlayerChips[turnoJug]=PlayerChips[turnoJug]-100;
+		if(PlayerFolded[turnoJug]==false):
+			if turnoJug==0:
+				yield(tomaDecisionJugador(), "completed")
+			else:
+				yield(tomaDecisionBots(), "completed")
+			
+			if opcionTurno==1:
+				pass
+				#yield(call(), "completed")
+			else: 
+				if opcionTurno==2:
+					yield(fold(), "completed")
+				else:
+					pass
+				#	yield(raise(), "completed")
 		turnoJug=turnoJug+1;
 		if turnoJug>4:
 			turnoJug=0;
@@ -143,18 +185,13 @@ func tomaDecisionJugador():
 func _on_boton_presionado(opcion):
 	print("Botón seleccionado:", opcion)
 	# Aquí puedes realizar acciones basadas en la opción
-	if opcion==1:
-		print("Botón seleccionado:", opcion)
-	else:
-		if opcion==2:
-			print("Botón seleccionado:", opcion)
-		else:
-			print("Botón seleccionado:", opcion)
+	opcionTurno=opcion
+	print("Botón seleccionado:", opcion)
 	$Interfaz_Bets.hide()
 
 
 func tomaDecisionBots():
-	var opcion = rng.randf_range(0, 4)
+	opcionTurno = rng.randf_range(0, 4)
 	yield(get_tree().create_timer(rng.randf_range(0, 4)), "timeout") 
 
 
