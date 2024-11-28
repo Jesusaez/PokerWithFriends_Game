@@ -58,7 +58,7 @@ var PlayerChips = [5000, 5000, 5000, 5000, 5000]
 var PlayerFolded = [false, false, false, false, false]
 var playerName = ["Pedro Sanchez","Mario Mendez", "Jesus Saez", "Eric Garcia", "Josep Ruiz"]
 var playerCards=[]
-var chipsInTable=0 setget set_chips_Table
+var chipsInTable=0
 var turnoJug=0
 var numPlayer=5
 var bets_scene  # Referencia a la interfaz `Bets`
@@ -89,6 +89,10 @@ var CartasSacadas=[]
 var interfaz_players = []
 
 func _ready():
+	#Interfaz Chips Player
+	
+	$InterfazChipsPlayer/Background/Chips.text=str(PlayerChips[1])
+	
 	$Interfaz_Bets.hide()
 	bets_scene = $Interfaz_Bets  # Cambia esto si tienes una ruta diferente
 	bets_scene.connect("boton_presionado", self, "_on_boton_presionado")
@@ -126,18 +130,34 @@ func oneRound():
 	chipsInTable=0;
 
 func ponerFichasInicio():
-	PlayerChips[turnoJug]=PlayerChips[turnoJug]-50;
-	PlayerChips[turnoJug+1]=PlayerChips[turnoJug+1]-100;
-	chipsInTable=chipsInTable+150;
+	# Restar fichas al jugador y al siguiente jugador
+	PlayerChips[turnoJug] -= 50
+	actualizar_chips_player(turnoJug)  # Actualiza el label del jugador principal
 	
+	var next_player_index = (turnoJug + 1) % numPlayer
+	PlayerChips[next_player_index] -= 100
+	actualizar_chips_player(next_player_index)  # Actualiza el label del siguiente jugador
 
-func set_chips_Table(value):
-	chipsInTable = value
-	print("La variable de chips cambió a: ", value)
-	mostrarChipsMesa()  # Llama a la función que deseas ejecutar.
+	# Actualizar el total de fichas en la mesa
+	chipsInTable += 150
+	mostrarChipsMesa()
+
+	# Simular un pequeño retraso visual
+	yield(get_tree().create_timer(0.5), "timeout")
 
 func mostrarChipsMesa():
+	$ChipsInTable.text=str(chipsInTable)
 	print("Se ejecuta la función al cambiar la variable.")
+
+
+func actualizar_chips_player(player_index):
+	# Si es el jugador principal (índice 0)
+	if player_index == 0:
+		$InterfazChipsPlayer/Background/Chips.text = str(PlayerChips[player_index])
+	else:
+		# Si es un bot (índices 1, 2, 3, 4...)
+		var bot_instance = interfaz_players[player_index - 1]  # Recordemos que `interfaz_players` contiene solo los bots
+		bot_instance.get_node("Background/Chips").text = str(PlayerChips[player_index])
 
 
 func fold():
