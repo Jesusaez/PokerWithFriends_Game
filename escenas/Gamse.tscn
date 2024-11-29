@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://escenas/InterfazBets.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Assets/maps/Poker_table.png" type="Texture" id=2]
@@ -7,7 +7,7 @@
 [ext_resource path="res://Assets/Font/Oxanium-VariableFont_wght.ttf" type="DynamicFontData" id=5]
 
 [sub_resource type="DynamicFont" id=3]
-size = 75
+size = 30
 font_data = ExtResource( 5 )
 
 [sub_resource type="Curve2D" id=1]
@@ -17,7 +17,12 @@ _data = {
 
 [sub_resource type="Curve2D" id=2]
 _data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 266, 513, 0, 0, 0, 0, 791, 515, 0, 0, 0, 0, 793, 692, 0, 0, 0, 0, 263, 691, 0, 0, 0, 0, 266, 513 )
+"points": PoolVector2Array( 0, 0, 0, 0, 264, 707, 0, 0, 0, 0, 958, 706, 0, 0, 0, 0, 964, 487, 0, 0, 0, 0, 263, 480, 0, 0, 0, 0, 265, 709 )
+}
+
+[sub_resource type="Curve2D" id=4]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 275, 281, 0, 0, 0, 0, 829, 283, 0, 0, 0, 0, 834, 472, 0, 0, 0, 0, 275, 471, 0, 0, 0, 0, 275, 281 )
 }
 
 [node name="Node2D" type="Node2D"]
@@ -50,13 +55,13 @@ margin_bottom = 562.0
 rect_scale = Vector2( 0.838885, 0.84 )
 
 [node name="ChipsInTable" type="Label" parent="."]
-margin_left = 494.0
-margin_top = 309.0
-margin_right = 745.0
-margin_bottom = 385.0
+margin_left = 515.0
+margin_top = 238.0
+margin_right = 766.0
+margin_bottom = 314.0
 custom_fonts/font = SubResource( 3 )
 text = "00000"
-align = 2
+align = 1
 
 [node name="InterfazJugadores" type="Path2D" parent="."]
 position = Vector2( 35, -53 )
@@ -85,12 +90,40 @@ offset = 2381.0
 [node name="CardSpawn" type="Path2D" parent="."]
 curve = SubResource( 2 )
 
-[node name="CardSpawnLocation1" type="PathFollow2D" parent="CardSpawn"]
-position = Vector2( 446.896, 513.689 )
-rotation = 0.00380495
-offset = 181.0
-
 [node name="CardSpawnLocation2" type="PathFollow2D" parent="CardSpawn"]
-position = Vector2( 616, 514.333 )
-rotation = 0.00383005
-offset = 350.0
+position = Vector2( 674.576, 484.11 )
+rotation = -3.13161
+offset = 1200.0
+
+[node name="CardSpawnLocation1" type="PathFollow2D" parent="CardSpawn"]
+position = Vector2( 454.012, 481.907 )
+rotation = -3.1316
+offset = 1420.03
+
+[node name="CardSpawnCenter" type="Path2D" parent="."]
+curve = SubResource( 4 )
+
+[node name="CardSpawnCenter1" type="PathFollow2D" parent="CardSpawnCenter"]
+position = Vector2( 375.165, 281.362 )
+rotation = 0.00362138
+offset = 100.0
+
+[node name="CardSpawnCenter2" type="PathFollow2D" parent="CardSpawnCenter"]
+position = Vector2( 475.359, 281.723 )
+rotation = 0.00360089
+offset = 200.0
+
+[node name="CardSpawnCenter3" type="PathFollow2D" parent="CardSpawnCenter"]
+position = Vector2( 576.197, 282.087 )
+rotation = 0.00360949
+offset = 300.0
+
+[node name="CardSpawnCenter4" type="PathFollow2D" parent="CardSpawnCenter"]
+position = Vector2( 676.407, 282.449 )
+rotation = 0.00361778
+offset = 400.0
+
+[node name="CardSpawnCenter5" type="PathFollow2D" parent="CardSpawnCenter"]
+position = Vector2( 776.406, 282.81 )
+rotation = 0.00361228
+offset = 500.0

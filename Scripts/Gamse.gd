@@ -55,14 +55,18 @@ var Baraja = [
 ]
 # Arrays con los nombres y los chips
 var PlayerChips = [5000, 5000, 5000, 5000, 5000]
+var PlayerMaxCalled = [0, 0, 0, 0, 0]
 var PlayerFolded = [false, false, false, false, false]
 var playerName = ["Pedro Sanchez","Mario Mendez", "Jesus Saez", "Eric Garcia", "Josep Ruiz"]
 var playerCards=[]
 var chipsInTable=0
+var chipsToPlay=0
 var turnoJug=0
 var numPlayer=5
 var bets_scene  # Referencia a la interfaz `Bets`
 var opcionTurno
+
+
 # Escenas  instanciar
 var player_card_scene = preload("res://escenas/InterfazEnemy.tscn")  
 var card_scene = preload("res://escenas/Carta.tscn")  
@@ -78,6 +82,13 @@ onready var path_follows = [
 onready var Card_positions = [
 	$CardSpawn/CardSpawnLocation1,
 	$CardSpawn/CardSpawnLocation2
+]
+onready var Card_positions_Center = [
+	$CardSpawnCenter/CardSpawnCenter1,
+	$CardSpawnCenter/CardSpawnCenter2,
+	$CardSpawnCenter/CardSpawnCenter3,
+	$CardSpawnCenter/CardSpawnCenter4,
+	$CardSpawnCenter/CardSpawnCenter5
 ]
 
 onready var button1 = $Interfaz_Bets/call
@@ -124,18 +135,57 @@ func oneRound():
 	#Robar Cartas
 	yield(mostrar_cartas_secuencialmente(), "completed")
 	yield(ponerFichasInicio(), "completed")
+	sumarTurnoJug(2)
 	yield(tomaDecisiones(), "completed")
+	flop()
+	yield(tomaDecisiones(), "completed")
+	river()
+	yield(tomaDecisiones(), "completed")
+	turn()
+	
 	
 	turnoJug=turnoJug+1;
 	chipsInTable=0;
 
+func flop():
+	yield(robar_carta_center(0), "completed")
+	yield(robar_carta_center(1), "completed")
+	yield(robar_carta_center(2), "completed")	
+	
+func river():
+	yield(robar_carta_center(3), "completed")
+
+func turn():
+	yield(robar_carta_center(4), "completed")
+
+
+func robar_carta_center(card_index):
+	yield(get_tree().create_timer(0.5), "timeout")  # Esperar 1 segundo entre cartas	
+	var card_instance = card_scene.instance()
+	var card_texture = cojeCarta()
+	card_instance.get_node("Img").texture = card_texture
+	card_instance.rect_position = Card_positions_Center[card_index].position
+	card_instance.rect_scale = Vector2(0.75, 0.75)
+	add_child(card_instance)
+	playerCards.append(card_texture)
+
+func sumarTurnoJug(var numero):
+# warning-ignore:unused_variable
+	for i in range(numero):
+		turnoJug=turnoJug+1;
+		if turnoJug>4:
+			turnoJug=0;
+
 func ponerFichasInicio():
 	# Restar fichas al jugador y al siguiente jugador
 	PlayerChips[turnoJug] -= 50
+	PlayerMaxCalled[turnoJug]=50
 	actualizar_chips_player(turnoJug)  # Actualiza el label del jugador principal
 	
 	var next_player_index = (turnoJug + 1) % numPlayer
 	PlayerChips[next_player_index] -= 100
+	PlayerMaxCalled[next_player_index]=100
+	chipsToPlay=100
 	actualizar_chips_player(next_player_index)  # Actualiza el label del siguiente jugador
 
 	# Actualizar el total de fichas en la mesa
@@ -160,11 +210,20 @@ func actualizar_chips_player(player_index):
 		bot_instance.get_node("Background/Chips").text = str(PlayerChips[player_index])
 
 
-func fold():
+func fold():	
 	PlayerFolded[turnoJug]=true;
+	yield(get_tree().create_timer(0.5), "timeout")
+	
 
-#func call():
-
+func player_call():
+	#Esto Seria el Call y si no hay nada que tenga que subir no se le cambia nada entonces es el check
+	if(PlayerMaxCalled[turnoJug]<chipsToPlay):
+		PlayerChips[turnoJug]=PlayerChips[turnoJug]-(chipsToPlay-PlayerMaxCalled[turnoJug])
+		PlayerMaxCalled[turnoJug]=chipsToPlay
+		chipsInTable=chipsInTable+chipsToPlay
+	mostrarChipsMesa()
+	actualizar_chips_player(turnoJug)
+	yield(get_tree().create_timer(0.5), "timeout")	
 
 #func raise():
 
@@ -172,10 +231,6 @@ func fold():
 func tomaDecisiones():
 # warning-ignore:unused_variable
 	for i in range(numPlayer):
-		if(i==0):
-			PlayerChips[turnoJug]=PlayerChips[turnoJug]-50;
-		if(i==1):
-			PlayerChips[turnoJug]=PlayerChips[turnoJug]-100;
 		if(PlayerFolded[turnoJug]==false):
 			if turnoJug==0:
 				yield(tomaDecisionJugador(), "completed")
@@ -183,17 +238,14 @@ func tomaDecisiones():
 				yield(tomaDecisionBots(), "completed")
 			
 			if opcionTurno==1:
-				pass
-				#yield(call(), "completed")
+				yield(player_call(), "completed")
 			else: 
 				if opcionTurno==2:
 					yield(fold(), "completed")
 				else:
 					pass
 				#	yield(raise(), "completed")
-		turnoJug=turnoJug+1;
-		if turnoJug>4:
-			turnoJug=0;
+		sumarTurnoJug(1)
 		
 		
 # Falta hacer que se espere a q el jugador clicke uno de los botones de check o algo asi
@@ -211,8 +263,9 @@ func _on_boton_presionado(opcion):
 
 
 func tomaDecisionBots():
-	opcionTurno = rng.randf_range(0, 4)
-	yield(get_tree().create_timer(rng.randf_range(0, 4)), "timeout") 
+	opcionTurno = rng.randi_range(1, 1)
+	print(opcionTurno)
+	yield(get_tree().create_timer(rng.randi_range(0, 4)), "timeout") 
 
 
 # Robar Las Cartas God
