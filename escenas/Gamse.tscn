@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://escenas/InterfazBets.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Assets/maps/Poker_table.png" type="Texture" id=2]
 [ext_resource path="res://escenas/InterfazChipsPlayer.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scripts/Gamse.gd" type="Script" id=4]
 [ext_resource path="res://Assets/Font/Oxanium-VariableFont_wght.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://escenas/Debug_Tools/DebugBots.tscn" type="PackedScene" id=6]
 
 [sub_resource type="DynamicFont" id=3]
 size = 30
@@ -127,3 +128,7 @@ offset = 400.0
 position = Vector2( 776.406, 282.81 )
 rotation = 0.00361228
 offset = 500.0
+
+[node name="DebugTools" parent="." instance=ExtResource( 6 )]
+margin_top = 22.0
+margin_bottom = 22.0
