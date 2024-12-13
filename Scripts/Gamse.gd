@@ -1,59 +1,67 @@
 extends Node2D
 # array cartas
 var Baraja = [
-	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile000.png", "valor": 13, "palo": 0},
-	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile001.png", "valor": 1, "palo": 0},
-	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile002.png", "valor": 2, "palo": 0},
-	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile003.png", "valor": 3, "palo": 0},
-	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile004.png", "valor": 4, "palo": 0},
-	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile005.png", "valor": 5, "palo": 0},
-	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile006.png", "valor": 6, "palo": 0},
-	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile007.png", "valor": 7, "palo": 0},
-	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile008.png", "valor": 8, "palo": 0},
-	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile009.png", "valor": 9, "palo": 0},
-	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile010.png", "valor": 10, "palo": 0},
-	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile011.png", "valor": 11, "palo": 0},
-	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile012.png", "valor": 12, "palo": 0},
-	{"textura": "res://Assets/cartas_sueltas/Hearts/tile000.png", "valor": 13, "palo": 1},
-	{"textura": "res://Assets/cartas_sueltas/Hearts/tile001.png", "valor": 1, "palo": 1},
-	{"textura": "res://Assets/cartas_sueltas/Hearts/tile002.png", "valor": 2, "palo": 1},
-	{"textura": "res://Assets/cartas_sueltas/Hearts/tile003.png", "valor": 3, "palo": 1},
-	{"textura": "res://Assets/cartas_sueltas/Hearts/tile004.png", "valor": 4, "palo": 1},
-	{"textura": "res://Assets/cartas_sueltas/Hearts/tile005.png", "valor": 5, "palo": 1},
-	{"textura": "res://Assets/cartas_sueltas/Hearts/tile006.png", "valor": 6, "palo": 1},
-	{"textura": "res://Assets/cartas_sueltas/Hearts/tile007.png", "valor": 7, "palo": 1},
-	{"textura": "res://Assets/cartas_sueltas/Hearts/tile008.png", "valor": 8, "palo": 1},
-	{"textura": "res://Assets/cartas_sueltas/Hearts/tile009.png", "valor": 9, "palo": 1},
-	{"textura": "res://Assets/cartas_sueltas/Hearts/tile010.png", "valor": 10, "palo": 1},
-	{"textura": "res://Assets/cartas_sueltas/Hearts/tile011.png", "valor": 11, "palo": 1},
-	{"textura": "res://Assets/cartas_sueltas/Hearts/tile012.png", "valor": 12, "palo": 1},
-	{"textura": "res://Assets/cartas_sueltas/Spades/tile000.png", "valor": 13, "palo": 2},
-	{"textura": "res://Assets/cartas_sueltas/Spades/tile001.png", "valor": 1, "palo": 2},
-	{"textura": "res://Assets/cartas_sueltas/Spades/tile002.png", "valor": 2, "palo": 2},
-	{"textura": "res://Assets/cartas_sueltas/Spades/tile003.png", "valor": 3, "palo": 2},
-	{"textura": "res://Assets/cartas_sueltas/Spades/tile004.png", "valor": 4, "palo": 2},
-	{"textura": "res://Assets/cartas_sueltas/Spades/tile005.png", "valor": 5, "palo": 2},
-	{"textura": "res://Assets/cartas_sueltas/Spades/tile006.png", "valor": 6, "palo": 2},
-	{"textura": "res://Assets/cartas_sueltas/Spades/tile007.png", "valor": 7, "palo": 2},
-	{"textura": "res://Assets/cartas_sueltas/Spades/tile008.png", "valor": 8, "palo": 2},
-	{"textura": "res://Assets/cartas_sueltas/Spades/tile009.png", "valor": 9, "palo": 2},
-	{"textura": "res://Assets/cartas_sueltas/Spades/tile010.png", "valor": 10, "palo": 2},
-	{"textura": "res://Assets/cartas_sueltas/Spades/tile011.png", "valor": 11, "palo": 2},
-	{"textura": "res://Assets/cartas_sueltas/Spades/tile012.png", "valor": 12, "palo": 2},
-	{"textura": "res://Assets/cartas_sueltas/Clubs/tile000.png", "valor": 13, "palo": 3},
-	{"textura": "res://Assets/cartas_sueltas/Clubs/tile001.png", "valor": 1, "palo": 3},
-	{"textura": "res://Assets/cartas_sueltas/Clubs/tile002.png", "valor": 2, "palo": 3},
-	{"textura": "res://Assets/cartas_sueltas/Clubs/tile003.png", "valor": 3, "palo": 3},
-	{"textura": "res://Assets/cartas_sueltas/Clubs/tile004.png", "valor": 4, "palo": 3},
-	{"textura": "res://Assets/cartas_sueltas/Clubs/tile005.png", "valor": 5, "palo": 3},
-	{"textura": "res://Assets/cartas_sueltas/Clubs/tile006.png", "valor": 6, "palo": 3},
-	{"textura": "res://Assets/cartas_sueltas/Clubs/tile007.png", "valor": 7, "palo": 3},
-	{"textura": "res://Assets/cartas_sueltas/Clubs/tile008.png", "valor": 8, "palo": 3},
-	{"textura": "res://Assets/cartas_sueltas/Clubs/tile009.png", "valor": 9, "palo": 3},
-	{"textura": "res://Assets/cartas_sueltas/Clubs/tile010.png", "valor": 10, "palo": 3},
-	{"textura": "res://Assets/cartas_sueltas/Clubs/tile011.png", "valor": 11, "palo": 3},
-	{"textura": "res://Assets/cartas_sueltas/Clubs/tile012.png", "valor": 12, "palo": 3}
+	# Diamonds (Palo 0)
+	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile000.png", "valor": 14, "palo": 0},
+	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile001.png", "valor": 2, "palo": 0},
+	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile002.png", "valor": 3, "palo": 0},
+	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile003.png", "valor": 4, "palo": 0},
+	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile004.png", "valor": 5, "palo": 0},
+	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile005.png", "valor": 6, "palo": 0},
+	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile006.png", "valor": 7, "palo": 0},
+	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile007.png", "valor": 8, "palo": 0},
+	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile008.png", "valor": 9, "palo": 0},
+	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile009.png", "valor": 10, "palo": 0},
+	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile010.png", "valor": 11, "palo": 0},
+	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile011.png", "valor": 12, "palo": 0},
+	{"textura": "res://Assets/cartas_sueltas/Diamonds/tile012.png", "valor": 13, "palo": 0},
+
+	# Hearts (Palo 1)
+	{"textura": "res://Assets/cartas_sueltas/Hearts/tile000.png", "valor": 14, "palo": 1},
+	{"textura": "res://Assets/cartas_sueltas/Hearts/tile001.png", "valor": 2, "palo": 1},
+	{"textura": "res://Assets/cartas_sueltas/Hearts/tile002.png", "valor": 3, "palo": 1},
+	{"textura": "res://Assets/cartas_sueltas/Hearts/tile003.png", "valor": 4, "palo": 1},
+	{"textura": "res://Assets/cartas_sueltas/Hearts/tile004.png", "valor": 5, "palo": 1},
+	{"textura": "res://Assets/cartas_sueltas/Hearts/tile005.png", "valor": 6, "palo": 1},
+	{"textura": "res://Assets/cartas_sueltas/Hearts/tile006.png", "valor": 7, "palo": 1},
+	{"textura": "res://Assets/cartas_sueltas/Hearts/tile007.png", "valor": 8, "palo": 1},
+	{"textura": "res://Assets/cartas_sueltas/Hearts/tile008.png", "valor": 9, "palo": 1},
+	{"textura": "res://Assets/cartas_sueltas/Hearts/tile009.png", "valor": 10, "palo": 1},
+	{"textura": "res://Assets/cartas_sueltas/Hearts/tile010.png", "valor": 11, "palo": 1},
+	{"textura": "res://Assets/cartas_sueltas/Hearts/tile011.png", "valor": 12, "palo": 1},
+	{"textura": "res://Assets/cartas_sueltas/Hearts/tile012.png", "valor": 13, "palo": 1},
+
+	# Spades (Palo 2)
+	{"textura": "res://Assets/cartas_sueltas/Spades/tile000.png", "valor": 14, "palo": 2},
+	{"textura": "res://Assets/cartas_sueltas/Spades/tile001.png", "valor": 2, "palo": 2},
+	{"textura": "res://Assets/cartas_sueltas/Spades/tile002.png", "valor": 3, "palo": 2},
+	{"textura": "res://Assets/cartas_sueltas/Spades/tile003.png", "valor": 4, "palo": 2},
+	{"textura": "res://Assets/cartas_sueltas/Spades/tile004.png", "valor": 5, "palo": 2},
+	{"textura": "res://Assets/cartas_sueltas/Spades/tile005.png", "valor": 6, "palo": 2},
+	{"textura": "res://Assets/cartas_sueltas/Spades/tile006.png", "valor": 7, "palo": 2},
+	{"textura": "res://Assets/cartas_sueltas/Spades/tile007.png", "valor": 8, "palo": 2},
+	{"textura": "res://Assets/cartas_sueltas/Spades/tile008.png", "valor": 9, "palo": 2},
+	{"textura": "res://Assets/cartas_sueltas/Spades/tile009.png", "valor": 10, "palo": 2},
+	{"textura": "res://Assets/cartas_sueltas/Spades/tile010.png", "valor": 11, "palo": 2},
+	{"textura": "res://Assets/cartas_sueltas/Spades/tile011.png", "valor": 12, "palo": 2},
+	{"textura": "res://Assets/cartas_sueltas/Spades/tile012.png", "valor": 13, "palo": 2},
+
+	# Clubs (Palo 3)
+	{"textura": "res://Assets/cartas_sueltas/Clubs/tile000.png", "valor": 14, "palo": 3},
+	{"textura": "res://Assets/cartas_sueltas/Clubs/tile001.png", "valor": 2, "palo": 3},
+	{"textura": "res://Assets/cartas_sueltas/Clubs/tile002.png", "valor": 3, "palo": 3},
+	{"textura": "res://Assets/cartas_sueltas/Clubs/tile003.png", "valor": 4, "palo": 3},
+	{"textura": "res://Assets/cartas_sueltas/Clubs/tile004.png", "valor": 5, "palo": 3},
+	{"textura": "res://Assets/cartas_sueltas/Clubs/tile005.png", "valor": 6, "palo": 3},
+	{"textura": "res://Assets/cartas_sueltas/Clubs/tile006.png", "valor": 7, "palo": 3},
+	{"textura": "res://Assets/cartas_sueltas/Clubs/tile007.png", "valor": 8, "palo": 3},
+	{"textura": "res://Assets/cartas_sueltas/Clubs/tile008.png", "valor": 9, "palo": 3},
+	{"textura": "res://Assets/cartas_sueltas/Clubs/tile009.png", "valor": 10, "palo": 3},
+	{"textura": "res://Assets/cartas_sueltas/Clubs/tile010.png", "valor": 11, "palo": 3},
+	{"textura": "res://Assets/cartas_sueltas/Clubs/tile011.png", "valor": 12, "palo": 3},
+	{"textura": "res://Assets/cartas_sueltas/Clubs/tile012.png", "valor": 13, "palo": 3}
 ]
+
 
 # Arrays con los chips, el maximo que ha apostado, si ha foldeado y el nombre de cada jugador 
 #el jugador Pedro Sanchez es el usuario
@@ -171,76 +179,126 @@ func oneRound():
 	# 5 cartas en el centro
 	turn()
 	yield(tomaDecisiones(), "completed")
+	$DebugTools.hide()
 	yield(buscarGanador(), "completed")
-	#Falta comprobar quien gana y poner las variables q hagan falta a 0
+	yield(muestraCartas(),"completed")
+	yield(darDinero(),"completed")
 	
+	#yield(reiniciarVariables(),"completed")
 	
-	
-	turnoJug=turnoJug+1;
+	sumarTurnoJug(1)
 	chipsInTable=0;
-#Robar 3 cartas en el centro
+	
+
+func muestraCartas():
+	for i in range(numPlayer - 1):
+		interfaz_players[i].get_node("Background/Behind_Card1").texture= load(playerCards[((i+1)*2)].textura)
+		interfaz_players[i].get_node("Background/Behind_Card2").texture= load(playerCards[((i+1)*2)+1].textura)
+	yield(get_tree().create_timer(0.5), "timeout")
+
+func darDinero():
+	# Comprobar si hay un ganador
+	if ganador.size() > 0:
+		# Calcular la cantidad a repartir por cada ganador
+		var dineroPorGanador = chipsInTable / ganador.size()
+		
+		# Repartir el dinero entre los jugadores ganadores
+		for i in ganador:
+			PlayerChips[i] += dineroPorGanador
+			print(playerName[i] + " ha ganado " + str(dineroPorGanador) + " fichas.")
+			actualizar_chips_player(i)
+		# Resetear el dinero de la mesa
+		chipsInTable = 0
+		mostrarChipsMesa()
+	else:
+		print("No hay ganadores para repartir el dinero.")
+	yield(get_tree().create_timer(1), "timeout")
+	
 
 # Función para calificar la mano de un jugador
-func calificar_mano(cartas):
-	# Ordenamos las cartas de mayor a menor por valor
-	cartas.sort_custom(self, "_comparar_cartas")
-
-	# Comprobamos si el jugador tiene alguna de las manos posibles en poker
-	if es_royal_flush(cartas):
-		return {"tipo": "Royal Flush", "valor": 10, "cartas": cartas}
-	elif es_straight_flush(cartas):
-		return {"tipo": "Straight Flush", "valor": 9, "cartas": cartas}
-	elif es_four_of_a_kind(cartas):
-		return {"tipo": "Four-of-a-Kind", "valor": 8, "cartas": cartas}
-	elif es_full_house(cartas):
-		return {"tipo": "Full House", "valor": 7, "cartas": cartas}
-	elif es_flush(cartas):
-		return {"tipo": "Flush", "valor": 6, "cartas": cartas}
-	elif es_straight(cartas):
-		return {"tipo": "Straight", "valor": 5, "cartas": cartas}
-	elif es_three_of_a_kind(cartas):
-		return {"tipo": "Three-of-a-Kind", "valor": 4, "cartas": cartas}
-	elif es_two_pair(cartas):
-		return {"tipo": "Two-Pair", "valor": 3, "cartas": cartas}
-	elif es_one_pair(cartas):
-		return {"tipo": "One-Pair", "valor": 2, "cartas": cartas}
+# Función para calificar la mano de un jugador
+func calificar_mano(cartas_mano, cartas_mesa):
+	# Generar todas las combinaciones de 5 cartas
+# warning-ignore:unused_variable
+	var combinaciones = generar_combinaciones(cartas_mano, cartas_mesa)
+	
+	# Evaluar las combinaciones para determinar la mejor mano
+	if es_royal_flush(cartas_mano, cartas_mesa):
+		return {"tipo": "Royal Flush", "valor": 10, "cartas": cartas_mano + cartas_mesa}
+	elif es_straight_flush(cartas_mano, cartas_mesa):
+		return {"tipo": "Straight Flush", "valor": 9, "cartas": cartas_mano + cartas_mesa}
+	elif es_four_of_a_kind(cartas_mano, cartas_mesa):
+		return {"tipo": "Four-of-a-Kind", "valor": 8, "cartas": cartas_mano + cartas_mesa}
+	elif es_full_house(cartas_mano, cartas_mesa):
+		return {"tipo": "Full House", "valor": 7, "cartas": cartas_mano + cartas_mesa}
+	elif es_flush(cartas_mano , cartas_mesa):
+		return {"tipo": "Flush", "valor": 6, "cartas": cartas_mano + cartas_mesa}
+	elif es_straight(cartas_mano , cartas_mesa):
+		return {"tipo": "Straight", "valor": 5, "cartas": cartas_mano + cartas_mesa}
+	elif es_three_of_a_kind(cartas_mano , cartas_mesa):
+		return {"tipo": "Three-of-a-Kind", "valor": 4, "cartas": cartas_mano + cartas_mesa}
+	elif es_two_pair(cartas_mano , cartas_mesa):
+		return {"tipo": "Two-Pair", "valor": 3, "cartas": cartas_mano + cartas_mesa}
+	elif es_one_pair(cartas_mano , cartas_mesa):
+		return {"tipo": "One-Pair", "valor": 2, "cartas": cartas_mano + cartas_mesa}
 	else:
-		return {"tipo": "High Card", "valor": 1, "cartas": cartas}
+		return {"tipo": "High Card", "valor": 1, "cartas": cartas_mano + cartas_mesa}
 
 # Función para buscar el ganador entre los jugadores
 func buscarGanador():
 	# Inicializamos las variables necesarias
 	var manos = []
-	var cartas_combinadas = []
 
 	# Para cada jugador que no haya hecho fold, evaluamos su mano
+	yield(muestraCartas(),"completed")	
 	for i in range(numPlayer):
 		if !PlayerFolded[i]:  # Solo evaluamos si el jugador no ha hecho fold
 			# Combinamos las cartas del jugador con las cartas de la mesa
-			cartas_combinadas = [playerCards[i]] + tableCards
+			
 			# Evaluamos la mejor mano del jugador
-			var mano = calificar_mano(cartas_combinadas)
+			$DebugCarta.text="Jugador :" + str(playerName[i])+ " "
+			var mano = calificar_mano([playerCards[i]], tableCards)
 			manos.append({"jugador": i, "mano": mano})
-
+			$DebugCarta.text=$DebugCarta.text + mano["tipo"]
+			yield(get_tree().create_timer(10), "timeout")
+			$DebugCarta.text=""
+	$DebugCarta.hide()
 	# Ahora buscamos el ganador comparando las manos
 	manos.sort_custom(self, "_comparar_manos")
 
-	# Si hay empate, verificamos la carta más alta
+	# Imprimimos el ganador o ganadores
 	var mejor_mano = manos[0]
+	actualizarDebugGanador(mejor_mano)
 	var jugadores_ganadores = [mejor_mano["jugador"]]
 
 	# Comprobamos si hay empate con la mano más alta
 	for i in range(1, manos.size()):
+		# Si tienen la misma mano, verificamos la carta más alta de las manos
 		if manos[i]["mano"]["valor"] == mejor_mano["mano"]["valor"]:
-			# Si tienen la misma mano, verificamos la carta más alta de las manos
+			# Si hay empate en la mano, verificamos las cartas más altas
 			if _comparar_cartas(manos[i]["mano"]["cartas"], mejor_mano["mano"]["cartas"]) == 0:
 				# Si hay un empate total en la mano, sumamos el jugador al array de ganadores
 				jugadores_ganadores.append(manos[i]["jugador"])
+		else:
+			# Si no hay empate en el tipo de mano, terminamos el proceso
+			break
 
 	# Ahora 'jugadores_ganadores' contiene los jugadores que han ganado la ronda
 	print("Ganador(es):", jugadores_ganadores)
-	ganador=jugadores_ganadores
+	ganador = jugadores_ganadores
+	yield(get_tree().create_timer(0.5), "timeout")
 	return jugadores_ganadores
+
+func actualizarDebugGanador(mejor_mano):
+	for maon in mejor_mano:
+		$DebugGanador/Ganadores.text = $DebugGanador/Ganadores.text + str(mejor_mano["jugador"]) + " " + str(mejor_mano["mano"]["tipo"]) + " " + str(mejor_mano["mano"]["valor"]) + "\n"
+	yield(get_tree().create_timer(0.1), "timeout")	
+
+func actualizarDebugCarta(cartas):
+	for carta in cartas:
+		$DebugCarta.text = $DebugCarta.text + str(carta) + "\n"
+	yield(get_tree().create_timer(0.1), "timeout")	
+
 
 # Función para comparar dos manos basadas en el valor de las cartas
 func _comparar_manos(mano1, mano2):
@@ -252,112 +310,222 @@ func _comparar_manos(mano1, mano2):
 
 # Función para comparar dos cartas (para desempates)
 func _comparar_cartas(cartas1, cartas2):
-	# Comparamos las cartas de mayor a menor
-	for i in range(cartas1.size()):
-		if cartas1[i]["valor"] != cartas2[i]["valor"]:
-			return cartas1[i]["valor"] - cartas2[i]["valor"]
-	return 0
-
-
-
-func es_royal_flush(cartas):
-	# Verifica si las cartas forman una Royal Flush
-	var palos = []
-	var valores = []
+	# Si cartas1 y cartas2 son diccionarios directamente, accedemos a su valor
+	if typeof(cartas1) == TYPE_DICTIONARY and typeof(cartas2) == TYPE_DICTIONARY:
+		if cartas1["valor"] != cartas2["valor"]:
+			return cartas1["valor"] - cartas2["valor"]
+	# Si cartas1 o cartas2 son arrays de cartas, comparamos el primer elemento (por ejemplo)
+	elif typeof(cartas1) == TYPE_ARRAY and typeof(cartas2) == TYPE_ARRAY:
+		if cartas1.size() > 0 and cartas2.size() > 0:
+			if cartas1[0]["valor"] != cartas2[0]["valor"]:
+				return cartas1[0]["valor"] - cartas2[0]["valor"]
 	
-	for carta in cartas:
-		palos.append(carta.palo)
-		valores.append(carta.valor)
+	return 0  # Si no hay diferencias, retornamos 0
+
+
+# Función auxiliar para generar todas las combinaciones de 5 cartas
+func generar_combinaciones(cartas_mano, cartas_mesa):
+	# Combina las cartas de la mano y la mesa
+	var todas_las_cartas = cartas_mano + cartas_mesa
 	
-	if palos.has_only(palos[0]) and valores == [10, 11, 12, 13, 14]:  # 10, J, Q, K, A
-		return true
+	# Genera todas las combinaciones posibles de 5 cartas
+	return _combinaciones(todas_las_cartas, 5)
+
+# Función auxiliar para generar combinaciones de r elementos
+func _combinaciones(cartas, r):
+	if r == 0:
+		return [[]]
+	if cartas.size() == 0:
+		return []
+	var combinaciones = []
+	for i in range(cartas.size()):
+		var carta = cartas[i]
+		var sub_combinaciones = _combinaciones(cartas.slice(i + 1, cartas.size()), r - 1)
+		for sub in sub_combinaciones:
+			combinaciones.append([carta] + sub)
+	return combinaciones
+
+
+func es_royal_flush(cartas_mano, cartas_mesa):
+	# Generar todas las combinaciones de 5 cartas
+	var combinaciones = generar_combinaciones(cartas_mano, cartas_mesa)
+	
+	# Evaluar cada combinación
+	for combinacion in combinaciones:
+		var palos = []
+		var valores = []
+		for carta in combinacion:
+			palos.append(carta["palo"])
+			valores.append(carta["valor"])
+
+		# Comprobar si todas las cartas tienen el mismo palo
+		var todos_los_palos_iguales = true
+		for palo in palos:
+			if palo != palos[0]:
+				todos_los_palos_iguales = false
+				break
+
+		# Comprobar si los valores corresponden a un Royal Flush
+		valores.sort()
+		if todos_los_palos_iguales and valores == [10, 11, 12, 13, 14]:
+			return true
 	return false
 
-func es_straight_flush(cartas):
-	# Verifica si las cartas forman una Straight Flush
-	if es_flush(cartas) and es_straight(cartas):
-		return true
+func es_straight_flush(cartas_mano, cartas_mesa):
+	# Generar todas las combinaciones de 5 cartas
+	var combinaciones = generar_combinaciones(cartas_mano, cartas_mesa)
+	
+	# Evaluar cada combinación
+	for combinacion in combinaciones:
+		if es_flush(cartas_mano, cartas_mesa) and es_straight(cartas_mano, cartas_mesa):
+			return true
 	return false
 
-func es_four_of_a_kind(cartas):
-	# Verifica si las cartas forman un Four of a Kind
-	var valores = []
+func es_four_of_a_kind(cartas_mano, cartas_mesa):
+	# Generar todas las combinaciones de 5 cartas
+	var combinaciones = generar_combinaciones(cartas_mano, cartas_mesa)
 	
-	for carta in cartas:
-		valores.append(carta.valor)
-	
-	return valores.count(valores[0]) == 4 or valores.count(valores[1]) == 4
+	# Evaluar cada combinación
+	for combinacion in combinaciones:
+		var valores = []
+		for carta in combinacion:
+			valores.append(carta["valor"])
+		if valores.count(valores[0]) == 4 or valores.count(valores[1]) == 4:
+			return true
+	return false
 
-func es_full_house(cartas):
-	# Verifica si las cartas forman un Full House
-	var valores = []
+func es_full_house(cartas_mano, cartas_mesa):
+	# Generar todas las combinaciones de 5 cartas
+	var combinaciones = generar_combinaciones(cartas_mano, cartas_mesa)
 	
-	for carta in cartas:
-		valores.append(carta.valor)
-	
-	return (valores.count(valores[0]) == 3 and valores.count(valores[1]) == 2) or (valores.count(valores[0]) == 2 and valores.count(valores[1]) == 3)
+	# Evaluar cada combinación
+	for combinacion in combinaciones:
+		var valores = []
+		for carta in combinacion:
+			valores.append(carta["valor"])
 
-func es_flush(cartas):
-	# Verifica si las cartas forman un Flush
-	var palos = []
-	
-	for carta in cartas:
-		palos.append(carta.palo)
-	
-	return palos.has_only(palos[0])
+		var counts = {}
+		for valor in valores:
+			counts[valor] = counts.get(valor, 0) + 1
 
-func es_straight(cartas):
-	# Verifica si las cartas forman una Straight
-	var valores = []
-	
-	for carta in cartas:
-		valores.append(carta.valor)
-	
-	valores.sort()
-	for i in range(4):
-		if valores[i] + 1 != valores[i + 1]:
-			return false
-	return true
+		var trio = null
+		var pareja = null
+		for key in counts.keys():
+			if counts[key] == 3:
+				trio = key
+			elif counts[key] == 2:
+				pareja = key
 
-func es_three_of_a_kind(cartas):
-	# Verifica si las cartas forman un Three of a Kind
-	var valores = []
-	
-	for carta in cartas:
-		valores.append(carta.valor)
-	
-	return valores.count(valores[0]) == 3 or valores.count(valores[1]) == 3
+		if trio != null and pareja != null:
+			return true
+	return false
 
-func es_two_pair(cartas):
-	# Verifica si las cartas forman un Two Pair
-	var valores = []
+func es_flush(cartas_mano, cartas_mesa):
+	# Generar todas las combinaciones de 5 cartas
+	var combinaciones = generar_combinaciones(cartas_mano, cartas_mesa)
 	
-	for carta in cartas:
-		valores.append(carta.valor)
-	
-	var counts = {}
-	for v in valores:
-		counts[v] = counts.get(v, 0) + 1
-	
-	var pair_count = 0
-	for count in counts.values():
-		if count == 2:
-			pair_count += 1
-	
-	return pair_count == 2
+	# Evaluar cada combinación
+	for combinacion in combinaciones:
+		var palos = []
+		for carta in combinacion:
+			palos.append(carta["palo"])
+		# Si todos los palos son iguales, es un Flush
+		if palos.size() > 0 and palos.count(palos[0]) == palos.size():
+			return true
+	return false
 
-func es_one_pair(cartas):
-	# Verifica si las cartas forman un One Pair
-	var valores = []
+func es_straight(cartas_mano, cartas_mesa):
+	# Generar todas las combinaciones de 5 cartas
+	var combinaciones = generar_combinaciones(cartas_mano, cartas_mesa)
 	
-	for carta in cartas:
-		valores.append(carta.valor)
+	# Evaluar cada combinación
+	for combinacion in combinaciones:
+		var valores = []
+		for carta in combinacion:
+			valores.append(carta["valor"])
+		valores.sort()
+		
+		# Comprobar si es una secuencia especial (A-2-3-4-5)
+		if valores == [2, 3, 4, 5, 14]:
+			return true
+		
+		# Comprobar si es una secuencia normal
+		var es_secuencia = true
+		for i in range(valores.size() - 1):
+			if valores[i] + 1 != valores[i + 1]:
+				es_secuencia = false
+				break
+		if es_secuencia:
+			return true
+	return false
+
+func es_three_of_a_kind(cartas_mano, cartas_mesa):
+	# Generar todas las combinaciones de 5 cartas
+	var combinaciones = generar_combinaciones(cartas_mano, cartas_mesa)
 	
-	var counts = {}
-	for v in valores:
-		counts[v] = counts.get(v, 0) + 1
+	# Evaluar cada combinación
+	for combinacion in combinaciones:
+		var valores = []
+		for carta in combinacion:
+			valores.append(carta["valor"])
+		
+		# Contar las ocurrencias de cada valor
+		var counts = {}
+		for v in valores:
+			counts[v] = counts.get(v, 0) + 1
+		
+		# Comprobar si hay tres cartas del mismo valor
+		for count in counts.values():
+			if count == 3:
+				return true
+	return false
+
+func es_two_pair(cartas_mano, cartas_mesa):
+	# Generar todas las combinaciones de 5 cartas
+	var combinaciones = generar_combinaciones(cartas_mano, cartas_mesa)
 	
-	return counts.has_value(2)
+	# Evaluar cada combinación
+	for combinacion in combinaciones:
+		var valores = []
+		for carta in combinacion:
+			valores.append(carta["valor"])
+		
+		# Contar las ocurrencias de cada valor
+		var counts = {}
+		for v in valores:
+			counts[v] = counts.get(v, 0) + 1
+		
+		# Contar cuántos pares hay
+		var pairs = []
+		for key in counts.keys():
+			if counts[key] == 2:
+				pairs.append(key)
+		
+		# Si hay exactamente dos pares, es Two Pair
+		if pairs.size() == 2:
+			return true
+	return false
+
+func es_one_pair(cartas_mano, cartas_mesa):
+	# Generar todas las combinaciones de 5 cartas
+	var combinaciones = generar_combinaciones(cartas_mano, cartas_mesa)
+	
+	# Evaluar cada combinación
+	for combinacion in combinaciones:
+		var valores = []
+		for carta in combinacion:
+			valores.append(carta["valor"])
+		
+		# Contar las ocurrencias de cada valor
+		var counts = {}
+		for v in valores:
+			counts[v] = counts.get(v, 0) + 1
+		
+		# Comprobar si hay un par
+		for count in counts.values():
+			if count == 2:
+				return true
+	return false
 
 
 func flop():
@@ -429,6 +597,9 @@ func actualizar_chips_player(player_index):
 #Funcion para cuando hacen fold
 func fold():	
 	PlayerFolded[turnoJug]=true;
+	if turnoJug!=0:
+		interfaz_players[turnoJug-1].get_node("Background/Behind_Card1").hide()
+		interfaz_players[turnoJug-1].get_node("Background/Behind_Card2").hide()
 	yield(get_tree().create_timer(0.5), "timeout")
 	
 #Funcion para cuando se hace un call
@@ -459,6 +630,7 @@ func actualizarDebugTools():
 			$DebugTools/ChipsInTable5.text = playerName[turnoJug] + "\n" + str(PlayerFolded[turnoJug]) + "\n" + str(PlayerMaxCalled[turnoJug]) + "\n" + str(opcionTurno)
 	$DebugTools/ChipsToPlay.text=str(chipsToPlay)
 	yield(get_tree().create_timer(0.1), "timeout")	
+
 
 #Funcion para tomar las decisiones dependiendo de q sea un bot o un jugador
 func tomaDecisiones():
