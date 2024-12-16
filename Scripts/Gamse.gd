@@ -681,7 +681,7 @@ func procesar_raise(valor):
 
 #Tomar decision Bot
 func tomaDecisionBots():
-	opcionTurno = rng.randi_range(1, 2)
+	opcionTurno = rng.randi_range(1, 3)
 	print(opcionTurno)
 	if(opcionTurno==3):
 		raiseBots()
