@@ -137,7 +137,7 @@ func _ready():
 	bets_scene.connect("boton_presionado", self, "_on_boton_presionado")
 
 	#Randomizar todo
-	randomize()
+	rng.randomize()
 	# ------------------------------------------------
 	# Instanciar los nombres y fichas de jugadores
 	# ------------------------------------------------
@@ -158,8 +158,49 @@ func _ready():
 		interfaz_players.append(player_card_instance)  # Agregar al array
 	
 	#Juega 1 Ronda [Falta hacer el bucle principal pero es facil]
-	oneRound()
+	while true:
+		oneRound()
+		if verificar_fin_juego():
+			break
 	
+func reiniciar_variables_ronda():
+	# Reiniciar las cartas de los jugadores y de la mesa
+	playerCards.clear()
+	tableCards.clear()
+	PlayerFolded = [false, false, false, false, false]
+	PlayerMaxCalled = [0, 0, 0, 0, 0]
+	comprobarBots()
+	chipsInTable = 0
+	chipsToPlay = 0
+	# Aquí puedes agregar cualquier otra variable que necesite ser reiniciada
+
+func comprobarBots():
+	for i in range(numPlayer - 1):
+		if(PlayerChips[i+1]<=0):
+			PlayerFolded[i+1]=true
+			interfaz_players[i].hide()
+
+func verificar_fin_juego():
+	# Verificar si el jugador 0 ha perdido todo su dinero
+	if PlayerChips[0] <= 0:
+		$Final.text="El jugador 0 ha perdido todo su dinero. Fin del juego."
+		return true
+	
+	# Verificar si todos los demás jugadores han perdido todo su dinero
+	var todos_perdieron = true
+	var cont=0
+	for i in range(numPlayer - 1):
+		if PlayerChips[i+1] >= 0:
+			cont=cont+1
+		if cont==4:
+			todos_perdieron = true
+	
+	if todos_perdieron:
+		$Final.text="Jugador Ganador"
+		return true
+	
+	return false
+
 	#Empezar Juego
 func oneRound():
 	#Robar Cartas
@@ -218,31 +259,35 @@ func darDinero():
 # Función para calificar la mano de un jugador
 # Función para calificar la mano de un jugador
 func calificar_mano(cartas_mano, cartas_mesa):
-	# Generar todas las combinaciones de 5 cartas
-# warning-ignore:unused_variable
-	var combinaciones = generar_combinaciones(cartas_mano, cartas_mesa)
-	
-	# Evaluar las combinaciones para determinar la mejor mano
-	if es_royal_flush(cartas_mano, cartas_mesa):
-		return {"tipo": "Royal Flush", "valor": 10, "cartas": cartas_mano + cartas_mesa}
-	elif es_straight_flush(cartas_mano, cartas_mesa):
-		return {"tipo": "Straight Flush", "valor": 9, "cartas": cartas_mano + cartas_mesa}
-	elif es_four_of_a_kind(cartas_mano, cartas_mesa):
-		return {"tipo": "Four-of-a-Kind", "valor": 8, "cartas": cartas_mano + cartas_mesa}
-	elif es_full_house(cartas_mano, cartas_mesa):
-		return {"tipo": "Full House", "valor": 7, "cartas": cartas_mano + cartas_mesa}
-	elif es_flush(cartas_mano , cartas_mesa):
-		return {"tipo": "Flush", "valor": 6, "cartas": cartas_mano + cartas_mesa}
-	elif es_straight(cartas_mano , cartas_mesa):
-		return {"tipo": "Straight", "valor": 5, "cartas": cartas_mano + cartas_mesa}
-	elif es_three_of_a_kind(cartas_mano , cartas_mesa):
-		return {"tipo": "Three-of-a-Kind", "valor": 4, "cartas": cartas_mano + cartas_mesa}
-	elif es_two_pair(cartas_mano , cartas_mesa):
-		return {"tipo": "Two-Pair", "valor": 3, "cartas": cartas_mano + cartas_mesa}
-	elif es_one_pair(cartas_mano , cartas_mesa):
-		return {"tipo": "One-Pair", "valor": 2, "cartas": cartas_mano + cartas_mesa}
-	else:
-		return {"tipo": "High Card", "valor": 1, "cartas": cartas_mano + cartas_mesa}
+	# Generar todas las combinaciones de 5 cartas	
+	var combinaciones = generar_combinaciones(cartas_mano + cartas_mesa, 5)
+	var mejor_mano = {"tipo": "High Card", "valor": 1, "cartas": []}
+
+	# Evaluar cada combinación
+	for combinacion in combinaciones:
+		if es_royal_flush(combinacion):
+			return {"tipo": "Royal Flush", "valor": 10, "cartas": combinacion}
+		elif es_straight_flush(combinacion):
+			mejor_mano = {"tipo": "Straight Flush", "valor": 9, "cartas": combinacion}
+		elif es_four_of_a_kind(combinacion):
+			mejor_mano = {"tipo": "Four-of-a-Kind", "valor": 8, "cartas": combinacion}
+		elif es_full_house(combinacion):
+			mejor_mano = {"tipo": "Full House", "valor": 7, "cartas": combinacion}
+		elif es_flush(combinacion):
+			mejor_mano = {"tipo": "Flush", "valor": 6, "cartas": combinacion}
+		elif es_straight(combinacion):
+			mejor_mano = {"tipo": "Straight", "valor": 5, "cartas": combinacion}
+		elif es_three_of_a_kind(combinacion):
+			mejor_mano = {"tipo": "Three-of-a-Kind", "valor": 4, "cartas": combinacion}
+		elif es_two_pair(combinacion):
+			mejor_mano = {"tipo": "Two-Pair", "valor": 3, "cartas": combinacion}
+		elif es_one_pair(combinacion):
+			mejor_mano = {"tipo": "One-Pair", "valor": 2, "cartas": combinacion}
+	return mejor_mano
+
+
+
+
 
 # Función para buscar el ganador entre los jugadores
 func buscarGanador():
@@ -256,11 +301,15 @@ func buscarGanador():
 			# Combinamos las cartas del jugador con las cartas de la mesa
 			
 			# Evaluamos la mejor mano del jugador
-			$DebugCarta.text="Jugador :" + str(playerName[i])+ " "
 			var mano = calificar_mano([playerCards[i]], tableCards)
 			manos.append({"jugador": i, "mano": mano})
-			$DebugCarta.text=$DebugCarta.text + mano["tipo"]
-			yield(get_tree().create_timer(10), "timeout")
+			$DebugCarta.text="Jugador :" + str(playerName[i])+ " "
+			for carta in mano["cartas"]:
+				$DebugCarta.text=$DebugCarta.text + str(carta) + "\n"
+				print(str(carta), "\n")
+			#yield(get_tree().create_timer(5), "timeout")
+			print("Jugador :" , str(playerName[i]), " ", mano["tipo"])
+			print("\n\n\n")
 			$DebugCarta.text=""
 	$DebugCarta.hide()
 	# Ahora buscamos el ganador comparando las manos
@@ -301,231 +350,170 @@ func actualizarDebugCarta(cartas):
 
 
 # Función para comparar dos manos basadas en el valor de las cartas
-func _comparar_manos(mano1, mano2):
-	# Primero comparamos el valor de la mano (Royal Flush > Straight Flush > Four of a Kind, etc.)
-	if mano1["mano"]["valor"] != mano2["mano"]["valor"]:
-		return mano1["mano"]["valor"] - mano2["mano"]["valor"]
-	# Si las manos son del mismo tipo, comparamos las cartas
-	return _comparar_cartas(mano1["mano"]["cartas"], mano2["mano"]["cartas"])
+func _comparar_manos(a, b):
+	# Verificamos que las llaves existan y sean válidas
+	if not a.has("mano") or not b.has("mano"):
+		return 0  # Si algo falla, consideramos que son iguales
 
-# Función para comparar dos cartas (para desempates)
+	var mano1 = a["mano"]
+	var mano2 = b["mano"]
+
+	# Verificamos que ambas manos tengan valores y cartas
+	if not mano1.has("valor") or not mano2.has("valor"):
+		return 0
+	if not mano1.has("cartas") or not mano2.has("cartas"):
+		return 0
+
+	# Comparación del valor de las manos
+	if mano1["valor"] != mano2["valor"]:
+		return mano1["valor"] - mano2["valor"]
+
+	# Comparación de las cartas si las manos son iguales
+	return _comparar_cartas(mano1["cartas"], mano2["cartas"])
+
+
+
 func _comparar_cartas(cartas1, cartas2):
-	# Si cartas1 y cartas2 son diccionarios directamente, accedemos a su valor
-	if typeof(cartas1) == TYPE_DICTIONARY and typeof(cartas2) == TYPE_DICTIONARY:
-		if cartas1["valor"] != cartas2["valor"]:
-			return cartas1["valor"] - cartas2["valor"]
-	# Si cartas1 o cartas2 son arrays de cartas, comparamos el primer elemento (por ejemplo)
-	elif typeof(cartas1) == TYPE_ARRAY and typeof(cartas2) == TYPE_ARRAY:
-		if cartas1.size() > 0 and cartas2.size() > 0:
-			if cartas1[0]["valor"] != cartas2[0]["valor"]:
-				return cartas1[0]["valor"] - cartas2[0]["valor"]
+	cartas1.sort_custom(self, "_comparar_valor_desc")
+	cartas2.sort_custom(self, "_comparar_valor_desc")
 	
-	return 0  # Si no hay diferencias, retornamos 0
+	for i in range(min(cartas1.size(), cartas2.size())):
+		if cartas1[i]["valor"] != cartas2[i]["valor"]:
+			return cartas1[i]["valor"] - cartas2[i]["valor"]
+	return 0
+
+# Función auxiliar para ordenar por valor descendente
+func _comparar_valor_desc(carta1, carta2):
+	return carta2["valor"] - carta1["valor"]
 
 
-# Función auxiliar para generar todas las combinaciones de 5 cartas
-func generar_combinaciones(cartas_mano, cartas_mesa):
-	# Combina las cartas de la mano y la mesa
-	var todas_las_cartas = cartas_mano + cartas_mesa
-	
-	# Genera todas las combinaciones posibles de 5 cartas
-	return _combinaciones(todas_las_cartas, 5)
 
-# Función auxiliar para generar combinaciones de r elementos
-func _combinaciones(cartas, r):
-	if r == 0:
-		return [[]]
-	if cartas.size() == 0:
-		return []
+# Función principal que genera combinaciones de 5 cartas a partir de un array de 7 cartas.
+func generar_combinaciones(cartas, tamano):
 	var combinaciones = []
-	for i in range(cartas.size()):
-		var carta = cartas[i]
-		var sub_combinaciones = _combinaciones(cartas.slice(i + 1, cartas.size()), r - 1)
-		for sub in sub_combinaciones:
-			combinaciones.append([carta] + sub)
+	combinar(cartas, tamano, 0, [], combinaciones)
 	return combinaciones
 
+# Función recursiva auxiliar para generar combinaciones.
+func combinar(cartas, tamano, inicio, actual, combinaciones):
+	# Si se ha alcanzado el tamaño deseado de la combinación, agregarla a la lista de combinaciones.
+	if actual.size() == tamano:
+		combinaciones.append(actual.duplicate())  # Se guarda una copia de la combinación actual.
+		return
 
-func es_royal_flush(cartas_mano, cartas_mesa):
-	# Generar todas las combinaciones de 5 cartas
-	var combinaciones = generar_combinaciones(cartas_mano, cartas_mesa)
-	
-	# Evaluar cada combinación
-	for combinacion in combinaciones:
-		var palos = []
-		var valores = []
-		for carta in combinacion:
-			palos.append(carta["palo"])
-			valores.append(carta["valor"])
+	# Iterar a través del array desde el índice actual hasta el final.
+	for i in range(inicio, cartas.size()):
+		actual.append(cartas[i])  # Añadir la carta actual a la combinación.
+		combinar(cartas, tamano, i + 1, actual, combinaciones)  # Llamada recursiva para completar la combinación.
+		actual.pop_back()  # Quitar la última carta para probar otras combinaciones.
 
-		# Comprobar si todas las cartas tienen el mismo palo
-		var todos_los_palos_iguales = true
-		for palo in palos:
-			if palo != palos[0]:
-				todos_los_palos_iguales = false
-				break
+func es_royal_flush(combinacion):
+	var palos = []
+	var valores = []
+	for carta in combinacion:
+		palos.append(carta["palo"])
+		valores.append(carta["valor"])
 
-		# Comprobar si los valores corresponden a un Royal Flush
-		valores.sort()
-		if todos_los_palos_iguales and valores == [10, 11, 12, 13, 14]:
+	valores.sort()
+	return palos.count(palos[0]) == palos.size() and valores == [10, 11, 12, 13, 14]
+
+
+func es_straight_flush(combinacion):
+	return es_flush(combinacion) and es_straight(combinacion)
+
+func es_four_of_a_kind(combinacion):
+	var valores = []
+	for carta in combinacion:
+		valores.append(carta["valor"])
+	for valor in valores:
+		if valores.count(valor) == 4:
 			return true
 	return false
 
-func es_straight_flush(cartas_mano, cartas_mesa):
-	# Generar todas las combinaciones de 5 cartas
-	var combinaciones = generar_combinaciones(cartas_mano, cartas_mesa)
-	
-	# Evaluar cada combinación
-	for combinacion in combinaciones:
-		if es_flush(cartas_mano, cartas_mesa) and es_straight(cartas_mano, cartas_mesa):
+func es_full_house(combinacion):
+	var valores = []
+	for carta in combinacion:
+		valores.append(carta["valor"])
+
+	var counts = {}
+	for valor in valores:
+		counts[valor] = counts.get(valor, 0) + 1
+
+	var tiene_trio = false
+	var tiene_par = false
+	for key in counts.keys():
+		if counts[key] == 3:
+			tiene_trio = true
+		elif counts[key] == 2:
+			tiene_par = true
+
+	return tiene_trio and tiene_par
+
+func es_flush(combinacion):
+	var palos = []
+	for carta in combinacion:
+		palos.append(carta["palo"])
+	return palos.count(palos[0]) == palos.size()
+
+func es_straight(combinacion):
+	var valores = []
+	for carta in combinacion:
+		valores.append(carta["valor"])
+	valores.sort()
+
+	# Comprobar secuencia especial (A-2-3-4-5)
+	if valores == [2, 3, 4, 5, 14]:
+		return true
+
+	# Comprobar secuencia normal
+	for i in range(valores.size() - 1):
+		if valores[i] + 1 != valores[i + 1]:
+			return false
+	return true
+
+func es_three_of_a_kind(combinacion):
+	var valores = []
+	for carta in combinacion:
+		valores.append(carta["valor"])
+
+	for valor in valores:
+		if valores.count(valor) == 3:
 			return true
 	return false
 
-func es_four_of_a_kind(cartas_mano, cartas_mesa):
-	# Generar todas las combinaciones de 5 cartas
-	var combinaciones = generar_combinaciones(cartas_mano, cartas_mesa)
-	
-	# Evaluar cada combinación
-	for combinacion in combinaciones:
-		var valores = []
-		for carta in combinacion:
-			valores.append(carta["valor"])
-		if valores.count(valores[0]) == 4 or valores.count(valores[1]) == 4:
+func es_two_pair(combinacion):
+	var valores = []
+	for carta in combinacion:
+		valores.append(carta["valor"])
+
+	var counts = {}
+	for v in valores:
+		counts[v] = counts.get(v, 0) + 1
+
+	# Contamos cuántos pares hay
+	var pairs = 0
+	for count in counts.values():
+		if count == 2:
+			pairs += 1
+
+	return pairs >= 2  # Permite detectar más de dos pares en combinaciones más grandes
+
+
+func es_one_pair(combinacion):
+	var valores = []
+	for carta in combinacion:
+		valores.append(carta["valor"])
+
+	var counts = {}
+	for v in valores:
+		counts[v] = counts.get(v, 0) + 1
+
+	# Verifica si hay al menos un par
+	for count in counts.values():
+		if count == 2:
 			return true
 	return false
 
-func es_full_house(cartas_mano, cartas_mesa):
-	# Generar todas las combinaciones de 5 cartas
-	var combinaciones = generar_combinaciones(cartas_mano, cartas_mesa)
-	
-	# Evaluar cada combinación
-	for combinacion in combinaciones:
-		var valores = []
-		for carta in combinacion:
-			valores.append(carta["valor"])
-
-		var counts = {}
-		for valor in valores:
-			counts[valor] = counts.get(valor, 0) + 1
-
-		var trio = null
-		var pareja = null
-		for key in counts.keys():
-			if counts[key] == 3:
-				trio = key
-			elif counts[key] == 2:
-				pareja = key
-
-		if trio != null and pareja != null:
-			return true
-	return false
-
-func es_flush(cartas_mano, cartas_mesa):
-	# Generar todas las combinaciones de 5 cartas
-	var combinaciones = generar_combinaciones(cartas_mano, cartas_mesa)
-	
-	# Evaluar cada combinación
-	for combinacion in combinaciones:
-		var palos = []
-		for carta in combinacion:
-			palos.append(carta["palo"])
-		# Si todos los palos son iguales, es un Flush
-		if palos.size() > 0 and palos.count(palos[0]) == palos.size():
-			return true
-	return false
-
-func es_straight(cartas_mano, cartas_mesa):
-	# Generar todas las combinaciones de 5 cartas
-	var combinaciones = generar_combinaciones(cartas_mano, cartas_mesa)
-	
-	# Evaluar cada combinación
-	for combinacion in combinaciones:
-		var valores = []
-		for carta in combinacion:
-			valores.append(carta["valor"])
-		valores.sort()
-		
-		# Comprobar si es una secuencia especial (A-2-3-4-5)
-		if valores == [2, 3, 4, 5, 14]:
-			return true
-		
-		# Comprobar si es una secuencia normal
-		var es_secuencia = true
-		for i in range(valores.size() - 1):
-			if valores[i] + 1 != valores[i + 1]:
-				es_secuencia = false
-				break
-		if es_secuencia:
-			return true
-	return false
-
-func es_three_of_a_kind(cartas_mano, cartas_mesa):
-	# Generar todas las combinaciones de 5 cartas
-	var combinaciones = generar_combinaciones(cartas_mano, cartas_mesa)
-	
-	# Evaluar cada combinación
-	for combinacion in combinaciones:
-		var valores = []
-		for carta in combinacion:
-			valores.append(carta["valor"])
-		
-		# Contar las ocurrencias de cada valor
-		var counts = {}
-		for v in valores:
-			counts[v] = counts.get(v, 0) + 1
-		
-		# Comprobar si hay tres cartas del mismo valor
-		for count in counts.values():
-			if count == 3:
-				return true
-	return false
-
-func es_two_pair(cartas_mano, cartas_mesa):
-	# Generar todas las combinaciones de 5 cartas
-	var combinaciones = generar_combinaciones(cartas_mano, cartas_mesa)
-	
-	# Evaluar cada combinación
-	for combinacion in combinaciones:
-		var valores = []
-		for carta in combinacion:
-			valores.append(carta["valor"])
-		
-		# Contar las ocurrencias de cada valor
-		var counts = {}
-		for v in valores:
-			counts[v] = counts.get(v, 0) + 1
-		
-		# Contar cuántos pares hay
-		var pairs = []
-		for key in counts.keys():
-			if counts[key] == 2:
-				pairs.append(key)
-		
-		# Si hay exactamente dos pares, es Two Pair
-		if pairs.size() == 2:
-			return true
-	return false
-
-func es_one_pair(cartas_mano, cartas_mesa):
-	# Generar todas las combinaciones de 5 cartas
-	var combinaciones = generar_combinaciones(cartas_mano, cartas_mesa)
-	
-	# Evaluar cada combinación
-	for combinacion in combinaciones:
-		var valores = []
-		for carta in combinacion:
-			valores.append(carta["valor"])
-		
-		# Contar las ocurrencias de cada valor
-		var counts = {}
-		for v in valores:
-			counts[v] = counts.get(v, 0) + 1
-		
-		# Comprobar si hay un par
-		for count in counts.values():
-			if count == 2:
-				return true
-	return false
 
 
 func flop():
@@ -693,7 +681,7 @@ func procesar_raise(valor):
 
 #Tomar decision Bot
 func tomaDecisionBots():
-	opcionTurno = rng.randi_range(1, 1)
+	opcionTurno = rng.randi_range(1, 2)
 	print(opcionTurno)
 	if(opcionTurno==3):
 		raiseBots()
