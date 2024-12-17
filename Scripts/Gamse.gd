@@ -120,24 +120,27 @@ onready var button3 = $Interfaz_Bets/raise
 onready var bets_scene = $Interfaz_Bets
 
 #Rng para poder hacer randoms
-var rng = RandomNumberGenerator.new()
+
 #Array con Todas las cartas Sacadas
 var CartasSacadas=[]
 #Array con la interfaz de los jugadores
 var interfaz_players = []
+var rng = RandomNumberGenerator.new()
 
 var ganador=0;
 
 func _ready():
+	randomize()
+	#Randomizar todo
+	rng.randomize()
 	#Poner el numero de chips en la interfaz del player
 	$InterfazChipsPlayer/Background/Chips.text=str(PlayerChips[1])
 	#Esconder la interfaz de las acciones
 	$Interfaz_Bets.hide()
 	#Conecctar la señal de los botones de accion
 	bets_scene.connect("boton_presionado", self, "_on_boton_presionado")
-
-	#Randomizar todo
-	rng.randomize()
+	
+	
 	# ------------------------------------------------
 	# Instanciar los nombres y fichas de jugadores
 	# ------------------------------------------------
@@ -301,7 +304,11 @@ func buscarGanador():
 			# Combinamos las cartas del jugador con las cartas de la mesa
 			
 			# Evaluamos la mejor mano del jugador
-			var mano = calificar_mano([playerCards[i]], tableCards)
+			var cosa= []
+			#cosa = playerCards[i]+playerCards[i+1]
+			cosa.append(playerCards[i])
+			cosa.append(playerCards[i+1])
+			var mano = calificar_mano(cosa, tableCards)
 			manos.append({"jugador": i, "mano": mano})
 			$DebugCarta.text="Jugador :" + str(playerName[i])+ " "
 			for carta in mano["cartas"]:
